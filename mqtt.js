@@ -20,6 +20,7 @@ export default ({
 }) => {
   const hub = Hub()
 
+  // Need to implement readable event + null if async loading data
   const objectStream = data => {
     const hub = Hub()
     return {
