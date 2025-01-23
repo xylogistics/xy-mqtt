@@ -1,0 +1,17 @@
+{
+  "name": "xy-mqtt",
+  "version": "1.0.0",
+  "description": "Guaranteed delivery of calls and events over MQTT",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "exponential-backoff": "^3.1.1",
+    "mqtt": "^5.10.3",
+    "short-uuid": "^5.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
