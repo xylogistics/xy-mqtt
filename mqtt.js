@@ -146,11 +146,11 @@ export default ({
     const payload = JSON.parse(packet.payload)
     await tryForever(
       async () => {
-        if (onMessage) await onMessage(ctx, topic, payload, packet)
+        if (onMessage) await onMessage(topic, payload, packet)
         await hub.emit(topic, payload)
       },
       () => {
-        if (onMessageRetry) onMessageRetry(ctx, topic, payload, packet)
+        if (onMessageRetry) onMessageRetry(topic, payload, packet)
         hub.emit('retry', topic, payload, packet)
       }
     )
@@ -167,10 +167,10 @@ export default ({
 
   // If we already have a session with the broker, we don't need to re-subscribe unless we have new subscriptions
   mqtt.on('connect', async ({ sessionPresent }) => {
-    if (onConnect) await onConnect(ctx)
+    if (onConnect) await onConnect()
     await hub.emit('connect')
     if (sessionPresent) return
-    if (onInit) await onInit(ctx)
+    if (onInit) await onInit()
     await hub.emit('init')
   })
 
