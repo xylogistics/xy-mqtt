@@ -4,6 +4,10 @@ Guaranteed delivery of calls and events over MQTT.
 ## Features
 Defaults to QoS 2, non clean session, SQLite persistence. Implements a command pattern for calling functions and receiving their results.
 
+## TODO
+1. Document unsubscribe and command_unregister.
+2. A diagram of how this works under the hood - QoS2, non clean session, SQLite persistence, MQTT broker's responsibilities.
+
 ## Run a MQTT broker
 
 compose.yml:
