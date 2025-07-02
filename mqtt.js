@@ -20,6 +20,8 @@ export default ({
 }) => {
   const hub = Hub()
 
+  let is_closed = false
+
   // Need to implement readable event + null if async loading data
   const objectStream = data => {
     const hub = Hub()
@@ -125,7 +127,7 @@ export default ({
       numOfAttempts: Number.MAX_SAFE_INTEGER,
       retry: () => {
         retry()
-        return true
+        return !is_closed
       }
     })
 
@@ -162,7 +164,11 @@ export default ({
     off: (topic, fn) => hub.off(topic, fn),
     publish: (topic, payload) => mqtt.publishAsync(topic, JSON.stringify(payload), { qos: 2 }),
     subscribe: topics => mqtt.subscribeAsync(topics, { qos: 2 }),
-    unsubscribe: topics => mqtt.unsubscribeAsync(topics)
+    unsubscribe: topics => mqtt.unsubscribeAsync(topics),
+    close: async () => {
+      is_closed = true
+      await mqtt.endAsync()
+    }
   }
 
   // If we already have a session with the broker, we don't need to re-subscribe unless we have new subscriptions

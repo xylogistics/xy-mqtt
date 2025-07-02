@@ -95,7 +95,8 @@ export default options => {
           await mqtt.publish(`${topic}/cancel`, { messageId })
         }
       }
-    }
+    },
+    close: mqtt.close
   }
 
   return api
