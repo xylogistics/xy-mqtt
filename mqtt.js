@@ -149,7 +149,7 @@ export default ({
     try {
       payload = JSON.parse(packet.payload)
     } catch (e) {
-      await hub.emit('mqtt parse error', topic, packet.payload)
+      await hub.emit('mqtt-parse-error', topic, packet.payload)
       throw e
     }
     await tryForever(
