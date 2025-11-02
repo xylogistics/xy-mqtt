@@ -145,7 +145,13 @@ export default ({
 
   mqtt.handleMessage = async (packet, cb) => {
     const topic = packet.topic
-    const payload = JSON.parse(packet.payload)
+    let payload = null
+    try {
+      payload = JSON.parse(packet.payload)
+    } catch (e) {
+      await hub.emit('mqtt parse error', topic, packet.payload)
+      throw e
+    }
     await tryForever(
       async () => {
         if (onMessage) await onMessage(topic, payload, packet)
