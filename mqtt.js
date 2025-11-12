@@ -2,6 +2,14 @@ import MQTT from 'mqtt'
 import { Hub } from './hub.js'
 import { backOff } from 'exponential-backoff'
 
+const jsonornull = v => {
+  try {
+    return JSON.parse(v)
+  } catch (e) {
+    return null
+  }
+}
+
 // publish, subscribe and unsubscribe return promises
 export default ({
   brokerUrl,
@@ -145,12 +153,10 @@ export default ({
 
   mqtt.handleMessage = async (packet, cb) => {
     const topic = packet.topic
-    let payload = null
-    try {
-      payload = JSON.parse(packet.payload)
-    } catch (e) {
+    const payload = jsonornull(packet.payload)
+    if (payload == null) {
       await hub.emit('mqtt-parse-error', topic, packet.payload)
-      throw e
+      return cb()
     }
     await tryForever(
       async () => {
